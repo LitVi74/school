@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "driver": "mysql",
+    "user": "root",
+    "password": "",
+    "database": "leaderboard",
+    "multipleStatements": true
+  },
+
+  "sql-file" : true
+}
