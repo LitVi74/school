@@ -1,26 +1,14 @@
 const db = require('../dbconnection');
 
 var Leaderboard = {
-    addUserResult: function (type, code, options, callback) {
-        let project = "";
-        options = options || {};
-
-        if (options.project) {
-            project = options.project;
-            delete options.project;
-        }
-
-        options = JSON.stringify(options);
-
-        db.query("insert into tasks (type, code, project, options, status, event) values (?, ?, ?, ?, ?, NOW())",
-            [type, code, project, options, Leaderboard.Status.created], callback);
+    addUserResult: function (userId, rating, callback) {
+        db.query("insert into leaderboard (userId, rating, event) values (?, ?, NOW())",
+            [userId, rating], callback);
     },
 
     listResults: function (callback) {
-        db.query("select * from tasks order by id desc limit 100", callback);
+        db.query("select * from leaderboard order by rating desc limit 100", callback);
     }
 };
-
-
 
 module.exports = Leaderboard;

@@ -1,0 +1,7 @@
+create database leaderboard;
+
+create table leaderboard (
+    userId varchar(50) not null PRIMARY KEY,
+    rating int not null,
+    event timestamp not null default CURRENT_TIMESTAMP
+);
