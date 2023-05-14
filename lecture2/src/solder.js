@@ -6,6 +6,7 @@ var Solder = function (type) {
     this.type = type;
     this.code = Math.floor(Math.random() * Solder.GetSoldersAmount(type)) + 1;
 
+    this.maxHP = Solder.HP
     this.hp = Solder.HP;
     this.damage = Math.ceil(Math.random() * (Solder.DAMAGE[1] - Solder.DAMAGE[0])) + Solder.DAMAGE[0];
 
@@ -28,7 +29,7 @@ Solder.prototype.takeDamage = function (damage) {
     console.log(this.type + ' takeDamage, hp - ' + this.hp);
 
     if (this.isAlive()) {
-        this.onTakeDamageAnimation();
+        this.onTakeDamageAnimation(damage);
     } else {
         this.onDieAnimation();
     }
