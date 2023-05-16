@@ -67,71 +67,28 @@ var BattleScene = cc.Scene.extend({
     },
 
     showStartBattleBanner: function () {
-        this.startBattle = new cc.Node();
-        this.startBattle.setNormalizedPosition(0.5, 0.5);
+        this.versus = sp.SkeletonAnimation.create(resources.battle_versus_json, resources.battle_atlas);
+        this.versus.setNormalizedPosition(0.5, 0.5);
 
-        var VS_V = new cc.Sprite("#vs_v.png");
-        VS_V.setAnchorPoint(0.9, 0.5);
-
-        var VS_S = new cc.Sprite("#vs_s.png");
-        VS_S.setAnchorPoint(0.1, 0.5);
-
-        this.startBattle.addChild(VS_V);
-        this.startBattle.addChild(VS_S);
-        this.addChild(this.startBattle);
+        this.addChild(this.versus);
     },
 
     hideStartBattleBanner: function () {
-      this.startBattle.runAction(new cc.Sequence(
+      this.versus.runAction(new cc.Sequence(
         new cc.FadeOut(0.3),
         new cc.ToggleVisibility()
       ));
     },
 
     showVictoryBanner: function () {
-        var victorySize = cc.spriteFrameCache.getSpriteFrame('victory_banner.png').getOriginalSize();
-
-        this.victory = new cc.Node();
+        this.victory = sp.SkeletonAnimation.create(resources.battle_victory_json, resources.battle_atlas);
         this.victory.setNormalizedPosition(0.5, 0.5);
-        this.victory.setContentSize(victorySize.width * 2, victorySize.height);
 
-        var victoryBannerLeft = new cc.Sprite("#victory_banner.png");
-        victoryBannerLeft.setAnchorPoint(1, 0.5);
-        victoryBannerLeft.setLocalZOrder(10);
-
-        var victoryBannerRight = new cc.Sprite("#victory_banner.png");
-        victoryBannerRight.setScaleX(-1);
-        victoryBannerRight.setAnchorPoint(1, 0.5);
-        victoryBannerRight.setLocalZOrder(10);
-
-        var victoryGreenLeft = new cc.Sprite("#victory_green1.png");
-        victoryGreenLeft.setScaleX(-1);
-        victoryGreenLeft.setNormalizedPosition(-0.2, 0.2);
-        victoryGreenLeft.setAnchorPoint(0, 0);
-
-        var victoryGreenRight = new cc.Sprite("#victory_green1.png");
-        victoryGreenRight.setNormalizedPosition(0.2, 0.2);
-        victoryGreenRight.setAnchorPoint(0, 0);
-
-        var victoryGreenBottom = new cc.Sprite("#victory_green2.png")
-        victoryGreenBottom.setAnchorPoint(0.5, 0);
-        victoryGreenBottom.setNormalizedPosition(0, -0.7);
-
-        var victorySword = new cc.Sprite("#victory_sword.png");
-        victorySword.setNormalizedPosition(0, 0.3);
-        victorySword.setLocalZOrder(5);
-
-        var victoryText = new cc.TextFieldTTF("VICTORY", resources.marvin_round.name, 78);
-        victoryText.setAnchorPoint(0.5, 0.2);
+        var victoryText = new cc.TextFieldTTF("VICTORY", resources.marvin_round.name, 82);
+        victoryText.setAnchorPoint(0.5, 0.6);
         victoryText.setColor(cc.color(255,211,32));
         victoryText.setLocalZOrder(15);
 
-        this.victory.addChild(victoryBannerLeft);
-        this.victory.addChild(victoryBannerRight);
-        this.victory.addChild(victoryGreenLeft);
-        this.victory.addChild(victoryGreenRight);
-        this.victory.addChild(victoryGreenBottom);
-        this.victory.addChild(victorySword);
         this.victory.addChild(victoryText);
         this.addChild(this.victory);
     }

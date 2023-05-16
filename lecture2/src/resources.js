@@ -44,5 +44,8 @@ var resources = {
 
     enemy10_json: 'res/jsons/bamboosource_stage2.json',
     enemy11_json: 'res/jsons/bamboosource_stage4.json',
-    enemy12_json: 'res/jsons/bamboosource_stage6.json'
+    enemy12_json: 'res/jsons/bamboosource_stage6.json',
+
+    battle_versus_json: 'res/battle_jsons/battle_versus.json',
+    battle_victory_json: 'res/battle_jsons/battle_victory.json'
 };
