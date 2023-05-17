@@ -24,7 +24,6 @@ var BattleScene = cc.Scene.extend({
         cc.audioEngine.setMusicVolume(0.5);
 
         this.battle.showVictoryAnimation = this.showVictoryBanner.bind(this);
-        this.battle.hideStartAnimation = this.hideStartBattleBanner.bind(this);
 
         this.showStartBattleBanner();
     },
@@ -67,29 +66,30 @@ var BattleScene = cc.Scene.extend({
     },
 
     showStartBattleBanner: function () {
-        this.versus = sp.SkeletonAnimation.create(resources.battle_versus_json, resources.battle_atlas);
-        this.versus.setNormalizedPosition(0.5, 0.5);
+        var versus = sp.SkeletonAnimation.create(resources.battle_versus_json, resources.battle_atlas);
+        versus.setNormalizedPosition(0.5, 0.5);
+        versus.setAnimation(0, "animation", false);
+        versus.setCompleteListener(function () {
+            this.removeChild(versus)
+        }.bind(this))
 
-        this.addChild(this.versus);
-    },
-
-    hideStartBattleBanner: function () {
-      this.versus.runAction(new cc.Sequence(
-        new cc.FadeOut(0.3),
-        new cc.ToggleVisibility()
-      ));
+        this.addChild(versus);
     },
 
     showVictoryBanner: function () {
-        this.victory = sp.SkeletonAnimation.create(resources.battle_victory_json, resources.battle_atlas);
-        this.victory.setNormalizedPosition(0.5, 0.5);
+        var victory = sp.SkeletonAnimation.create(resources.battle_victory_json, resources.battle_atlas);
+        victory.setNormalizedPosition(0.5, 0.5);
+        victory.setAnimation(0, "animation", false);
+        victory.setCompleteListener(function () {
+            this.removeChild(victory)
+        }.bind(this))
 
         var victoryText = new cc.TextFieldTTF("VICTORY", resources.marvin_round.name, 82);
         victoryText.setAnchorPoint(0.5, 0.6);
         victoryText.setColor(cc.color(255,211,32));
         victoryText.setLocalZOrder(15);
 
-        this.victory.addChild(victoryText);
-        this.addChild(this.victory);
+        victory.addChild(victoryText);
+        this.addChild(victory);
     }
 });
