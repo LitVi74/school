@@ -284,38 +284,48 @@ function checkLines()
 //тайлы хранятся как объекты {x,y}, id содержимого тайлов (цвета) хранятся в глобальном массиве tiles[x][y]
 function addSpecialEffects(tilesToDelete){
 	
-	//1. При удалении клеток зеленой линии требуется
-	//   удалять всех их соседей в радиусе 1 (по стороне).
-	//   Например:
-	//   (G - собранная зеленая линия, x - дополнительные удаляемые клетки любых цветов)
-	//   .......
-	//   ..xxx..
-	//   .xGGGx.
-	//   ..xxx..
-	//   .......
-	//   .......
-	//
-	//2. При удалении клеток красной линии требуется
-	//   удалять всех их соседей в радиусе 2 (по стороне).
-	//   Например:
-	//   (R - собранная красная линия, x - дополнительные удаляемые клетки любых цветов)
-	//   xxxx...
-	//   RRRxx..
-	//   xxxx...
-	//   xxx....
-	//   .......
-	//   .......
-	//
-	//3. При удалении клеток желтой линии требуется удалять
-	//   все смежные области из желтых клеток, даже если они не образуют линию.
-	//   Например:
-	//   (Y - собранная желтая линия, x - дополнительные удаляемые клетки желтого цвета)
-	//   .......
-	//   .....x.
-	//   ....xx.
-	//   ..YYY..
-	//   .xx....
-	//   xx.....
+	const visited = new Array(xTileCount).fill('').map(() => new Array(yTileCount).fill(false));
+
+	tilesToDelete.forEach((tile) => {
+		const { x, y } = tile;
+		visited[x][y] = true;
+	})
+
+	const red = 1, green = 2, yellow = 4;
+	const tilesColor = tilesToDelete.length ? tiles[tilesToDelete[0].x][tilesToDelete[0].y] : -1;
+	let links = [{x: 0, y: 1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: -1, y: 0}];
+	let queue = [];
+	tilesToDelete.forEach((tile) => {
+		const { x, y } = tile;
+		queue.push({x, y, depth: 0});
+	})
+
+	let depth;
+	switch (tilesColor) {
+		case green:
+			depth = 1;
+			break;
+		case red:
+			depth = 2;
+			break;
+		default:
+			depth = 0;
+	}
+
+	while (queue.length) {
+		const current = queue.shift();
+		for (let link of links) {
+			const x = current.x + link.x, y = current.y + link.y;
+			if (isCorrectTile(x, y) && !visited[x][y] && (
+				current.depth < depth ||
+				(tilesColor === yellow && tiles[x][y] === yellow)
+			)){
+				visited[x][y] = true;
+				queue.push({x, y, depth: current.depth + 1});
+				tilesToDelete.push({x, y});
+			}
+		}
+	}
 	
 	return tilesToDelete
 }
